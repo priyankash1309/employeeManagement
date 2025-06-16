@@ -15,8 +15,10 @@ function App() {
   const [form, setForm] = useState<Omit<Employee, 'id'>>({ name: '', email: '', department: '', salary: 0 });
   const [editId, setEditId] = useState<number | null>(null);
 
+  const APIEndPoint = "https://employeemanagement-caft.onrender.com/employees"
+
   const fetchEmployees = async () => {
-    const res = await fetch('http://localhost:4000/employees');
+    const res = await fetch(APIEndPoint);
     const data = await res.json();
     setEmployees(data);
   };
@@ -36,7 +38,7 @@ function App() {
     }
 
     const method = editId ? 'PUT' : 'POST';
-    const url = editId ? `http://localhost:4000/employees/${editId}` : 'http://localhost:4000/employees';
+    const url = editId ? `${APIEndPoint}/${editId}` : APIEndPoint;
     const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
@@ -67,7 +69,7 @@ function App() {
             </button>
             <button
               onClick={async () => {
-                const res = await fetch(`http://localhost:4000/employees/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${APIEndPoint}/${id}`, { method: 'DELETE' });
                 closeToast(); // Close immediately
                 if (res.ok) {
                   toast.success('Employee deleted successfully!');
